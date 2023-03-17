@@ -66,7 +66,7 @@ def resample(particles):
     particle_indices = np.random.choice(NUM_PARTICLES, size=NUM_PARTICLES, p=weights)
     new_particles = []
     for i in particle_indices:
-        mean = particles[i].mean    # GAMMA?
+        mean = particles[i].mean
         new_particle = Particle(np.random.normal(mean, PARTICLE_VARIANCE), PARTICLE_VARIANCE, None) 
         new_particles.append(new_particle)
     return new_particles
