@@ -43,7 +43,7 @@ def get_measurement(arr):
 def set_weights(measurement, particles):
     weights = []
     for particle in particles:  # get weight = ln(P(measurement | distribution of particle i))
-        weight = norm.logpdf(measurement, particle.mean, particle.variance)  # GAMMA?
+        weight = norm.logpdf(measurement, particle.mean, particle.variance)  
         weights.append(weight)
     normalized_weights = scipy.special.softmax(weights)  # scipy's built-in function takes care of the over/undeflow issues
     for i in range(NUM_PARTICLES):
@@ -55,7 +55,7 @@ def get_dist(particles):
     PDF = np.zeros(1001)
     t = np.linspace(0, HORIZON, 1001)
     for particle in particles:  # weighted sum of all the particle pdfs
-        dist = norm(particle.mean, particle.variance)   # GAMMA?
+        dist = norm(particle.mean, particle.variance)   
         particle_pdf = dist.pdf(t)
         PDF += particle.weight * particle_pdf
     return t, PDF
@@ -67,14 +67,14 @@ def resample(particles):
     new_particles = []
     for i in particle_indices:
         mean = particles[i].mean    # GAMMA?
-        new_particle = Particle(np.random.normal(mean, PARTICLE_VARIANCE), PARTICLE_VARIANCE, None) # weight should be 1/NUM_PARTICLES?  # GAMMA?
+        new_particle = Particle(np.random.normal(mean, PARTICLE_VARIANCE), PARTICLE_VARIANCE, None) 
         new_particles.append(new_particle)
     return new_particles
 
 
 def propagate(particles):
     for particle in particles:
-        particle.mean = particle.mean - TIMESTEP + PROPAGATE_VARIANCE * np.random.randn()    # GAMMA?
+        particle.mean = particle.mean - TIMESTEP + PROPAGATE_VARIANCE * np.random.randn()    
     return particles
 
 
