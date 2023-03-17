@@ -78,23 +78,6 @@ def propagate(particles):
     return particles
 
 
-def save_dist(particles,obs,i):
-    plt.rc('text', usetex=True)
-    t, pdf = get_dist(particles)
-    particles_x = [p.mean for p in particles]
-    obs = np.minimum(obs,HORIZON)
-    plt.clf()
-    plt.plot(t,pdf)
-    plt.scatter(particles_x,0.1 * np.ones_like(particles_x),s=1)
-    plt.scatter(obs,0.1 * np.ones_like(obs))
-    plt.xlim(0,10)
-    plt.ylim(0,2)
-    plt.xlabel(r"$t$")
-    plt.ylabel(r"$p(collision)$")
-    plt.tight_layout()
-    plt.savefig(f"./test/{i:03d}.png",dpi=600)
-
-
 def get_policy(PDF, t, ttc, thresh):
     # makes assumption that time to collision (ttc) is inside of t (timesteps)
     lb, ub = 0, ttc  # define lower and upper bounds
@@ -119,7 +102,6 @@ def main():
         t, PDF = get_dist(particles)
         p = get_policy(PDF, t, TIME_UNTIL_COLLISION, THRESHOLD)
         policies.append(p)
-        # save_dist(particles,ttcs_history[i],i+1)
         particles = resample(particles)
         particles = propagate(particles)
     print(policies)
